@@ -44,11 +44,36 @@ const globalCSS = `
   }
   .slide.active {
     display: flex;
-    animation: slideIn 0.7s cubic-bezier(0.23, 1, 0.32, 1);
   }
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(50px) scale(0.96); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
+
+  /* ── Slide transition animations ── */
+  .slide-enter {
+    animation: slideEnter 0.65s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  }
+  .slide-exit {
+    animation: slideExit 0.45s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  }
+  @keyframes slideEnter {
+    from { opacity: 0; transform: translateX(60px) scale(0.97); }
+    to   { opacity: 1; transform: translateX(0) scale(1); }
+  }
+  @keyframes slideExit {
+    from { opacity: 1; transform: translateX(0) scale(1); }
+    to   { opacity: 0; transform: translateX(-60px) scale(0.97); }
+  }
+  .slide-enter-back {
+    animation: slideEnterBack 0.65s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  }
+  .slide-exit-back {
+    animation: slideExitBack 0.45s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  }
+  @keyframes slideEnterBack {
+    from { opacity: 0; transform: translateX(-60px) scale(0.97); }
+    to   { opacity: 1; transform: translateX(0) scale(1); }
+  }
+  @keyframes slideExitBack {
+    from { opacity: 1; transform: translateX(0) scale(1); }
+    to   { opacity: 0; transform: translateX(60px) scale(0.97); }
   }
 
   .green-glow {
@@ -101,10 +126,11 @@ const globalCSS = `
     transform: translateY(-2px);
   }
 
+  /* ── PROFILE IMAGE — bigger + full face visible ── */
   .profile-img {
-    width: 200px; height: 200px;
+    width: 240px; height: 240px;
     border: 5px solid var(--green);
-    background: url('/freddy.jpg') center/cover;
+    background: url('/freddy.jpg') center top/cover;
     animation: morph 8s ease-in-out infinite;
     box-shadow: 0 0 80px rgba(152,255,0,0.5), 0 0 160px rgba(152,255,0,0.2);
     flex-shrink: 0; position: relative; z-index: 2;
@@ -174,15 +200,17 @@ const globalCSS = `
   }
   .bounce { animation: bounce 1.6s ease-in-out infinite; }
 
+  /* ── Enhanced staggered float animations ── */
   @keyframes floatUp {
-    0% { opacity:0; transform: translateY(30px); }
-    100% { opacity:1; transform: translateY(0); }
+    0% { opacity:0; transform: translateY(40px) scale(0.95); }
+    100% { opacity:1; transform: translateY(0) scale(1); }
   }
-  .float-1 { animation: floatUp 0.6s ease forwards 0.1s; opacity:0; }
-  .float-2 { animation: floatUp 0.6s ease forwards 0.3s; opacity:0; }
-  .float-3 { animation: floatUp 0.6s ease forwards 0.5s; opacity:0; }
-  .float-4 { animation: floatUp 0.6s ease forwards 0.7s; opacity:0; }
-  .float-5 { animation: floatUp 0.6s ease forwards 0.9s; opacity:0; }
+  .float-1 { animation: floatUp 0.7s cubic-bezier(0.23,1,0.32,1) forwards 0.05s; opacity:0; }
+  .float-2 { animation: floatUp 0.7s cubic-bezier(0.23,1,0.32,1) forwards 0.2s; opacity:0; }
+  .float-3 { animation: floatUp 0.7s cubic-bezier(0.23,1,0.32,1) forwards 0.35s; opacity:0; }
+  .float-4 { animation: floatUp 0.7s cubic-bezier(0.23,1,0.32,1) forwards 0.5s; opacity:0; }
+  .float-5 { animation: floatUp 0.7s cubic-bezier(0.23,1,0.32,1) forwards 0.65s; opacity:0; }
+  .float-6 { animation: floatUp 0.7s cubic-bezier(0.23,1,0.32,1) forwards 0.8s; opacity:0; }
 
   @keyframes scanLine {
     0% { top: -10%; } 100% { top: 110%; }
@@ -259,14 +287,46 @@ const globalCSS = `
     margin: 0.6rem 0 1rem;
   }
 
+  /* ── NSL hover chars ── */
   .nsl-char {
     display: inline-block;
-    transition: color 0.3s, text-shadow 0.3s, transform 0.2s;
+    transition: color 0.3s, text-shadow 0.3s, transform 0.25s cubic-bezier(0.23,1,0.32,1);
   }
   .nsl-char:hover {
     color: white;
     text-shadow: 0 0 40px rgba(152,255,0,1);
-    transform: translateY(-8px) scale(1.1);
+    transform: translateY(-12px) scale(1.15);
+  }
+
+  /* ── Word reveal animation for NSL slide ── */
+  @keyframes wordReveal {
+    0%   { opacity:0; transform: translateY(80px) skewY(5deg); }
+    100% { opacity:1; transform: translateY(0) skewY(0deg); }
+  }
+  .word-reveal-1 { animation: wordReveal 0.8s cubic-bezier(0.23,1,0.32,1) forwards 0.3s; opacity:0; }
+  .word-reveal-2 { animation: wordReveal 0.8s cubic-bezier(0.23,1,0.32,1) forwards 0.55s; opacity:0; }
+  .word-reveal-3 { animation: wordReveal 0.8s cubic-bezier(0.23,1,0.32,1) forwards 0.8s; opacity:0; }
+  .word-reveal-4 { animation: wordReveal 0.8s cubic-bezier(0.23,1,0.32,1) forwards 1.0s; opacity:0; }
+
+  /* ── Cover name reveal ── */
+  @keyframes nameSlide {
+    0%   { opacity:0; transform: translateX(-40px); letter-spacing: 0.2em; }
+    100% { opacity:1; transform: translateX(0); letter-spacing: -0.04em; }
+  }
+  .name-reveal { animation: nameSlide 0.9s cubic-bezier(0.23,1,0.32,1) forwards 0.45s; opacity:0; }
+
+  /* ── Shimmer on green text ── */
+  @keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  .shimmer-green {
+    background: linear-gradient(90deg, #98FF00 0%, #ffffff 40%, #98FF00 60%, #00ffcc 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
   }
 `
 
@@ -331,7 +391,7 @@ function useNeuralCanvas(canvasRef) {
 /* ─── SLIDE 1: COVER ─────────────────────────────────────────── */
 function SlideCover() {
   return (
-    <div className="slide active" style={{ gap:'0.4rem' }}>
+    <div className="slide active" style={{ gap:'0.3rem' }}>
       {/* Corner accents */}
       {[['top:20px','left:20px','borderTop','borderLeft'],['top:20px','right:20px','borderTop','borderRight'],
         ['bottom:70px','left:20px','borderBottom','borderLeft'],['bottom:70px','right:20px','borderBottom','borderRight']
@@ -340,28 +400,29 @@ function SlideCover() {
           width:55, height:55, [c]:'3px solid var(--green)', [d]:'3px solid var(--green)', opacity:0.45 }} />
       ))}
 
-      {/* Profile + orbit rings */}
-      <div className="float-1" style={{ position:'relative', width:200, height:200, marginBottom:'1rem' }}>
-        <div className="orbit-ring" style={{ width:270, height:270, top:'50%', left:'50%', animationDuration:'12s' }} />
-        <div className="orbit-ring" style={{ width:330, height:330, top:'50%', left:'50%', animationDuration:'20s', animationDirection:'reverse' }} />
-        <div className="profile-img" />
+      {/* Profile + orbit rings — BIGGER container */}
+      <div className="float-1" style={{ position:'relative', width:280, height:280, marginBottom:'0.8rem' }}>
+        <div className="orbit-ring" style={{ width:330, height:330, top:'50%', left:'50%', animationDuration:'12s' }} />
+        <div className="orbit-ring" style={{ width:400, height:400, top:'50%', left:'50%', animationDuration:'20s', animationDirection:'reverse' }} />
+        <div className="profile-img" style={{ width:240, height:240, position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)' }} />
       </div>
 
       <img src="/platzi-logo.png" alt="Platzi Logo" className="platzi-logo float-2" />
 
-      <h1 className="glitch float-3" style={{
-        fontSize:'clamp(3rem, 8vw, 6.5rem)', fontWeight:900, fontStyle:'italic',
-        textTransform:'uppercase', letterSpacing:'-0.04em', lineHeight:1,
+      {/* FREDDY VEGA — name always visible, big */}
+      <h1 className="glitch name-reveal" style={{
+        fontSize:'clamp(3.5rem, 9vw, 7rem)', fontWeight:900, fontStyle:'italic',
+        textTransform:'uppercase', lineHeight:0.95,
       }}>
-        Freddy <span className="green-glow">Vega</span>
+        Freddy <span className="shimmer-green">Vega</span>
       </h1>
 
-      <div className="float-4" style={{ height:3, width:160, background:'linear-gradient(90deg, transparent, var(--green), transparent)', margin:'0.5rem auto' }} />
-      <p className="float-4" style={{ fontSize:'clamp(0.85rem,1.8vw,1.2rem)', fontWeight:700, letterSpacing:'0.45em', opacity:0.55, textTransform:'uppercase' }}>
+      <div className="float-3" style={{ height:3, width:160, background:'linear-gradient(90deg, transparent, var(--green), transparent)', margin:'0.5rem auto' }} />
+      <p className="float-3" style={{ fontSize:'clamp(0.85rem,1.8vw,1.2rem)', fontWeight:700, letterSpacing:'0.45em', opacity:0.55, textTransform:'uppercase' }}>
         Visionary Leadership
       </p>
 
-      <div className="float-5" style={{ marginTop:'1.8rem', display:'flex', flexDirection:'column', alignItems:'center', gap:'0.2rem',
+      <div className="float-4" style={{ marginTop:'1.5rem', display:'flex', flexDirection:'column', alignItems:'center', gap:'0.2rem',
         background:'rgba(255,255,255,0.03)', border:'1px solid rgba(255,255,255,0.08)', borderRadius:16, padding:'1rem 2.5rem' }}>
         <p style={{ fontSize:'0.7rem', textTransform:'uppercase', letterSpacing:'0.3em', opacity:0.35 }}>Presented by</p>
         <p style={{ fontSize:'clamp(1.4rem,3vw,2rem)', fontWeight:900, fontStyle:'italic' }}>Brayan Urrego Cacante</p>
@@ -521,7 +582,6 @@ function SlideLearning() {
           <p style={{ marginTop:'0.5rem', fontSize:'0.75rem', color:'var(--green)', opacity:0.6, letterSpacing:'0.15em' }}>— Brayan Urrego Cacante, 2026</p>
         </div>
 
-        {/* Tech images row */}
         <div className="float-4" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.8rem' }}>
           <div style={{ position:'relative', overflow:'hidden', borderRadius:14, border:'1px solid rgba(152,255,0,0.25)' }}>
             <img src="/programacion.jpg" alt="Programming" style={{ width:'100%', height:100, objectFit:'cover', display:'block' }} />
@@ -543,7 +603,7 @@ function SlideLearning() {
   )
 }
 
-/* ─── SLIDE 5: NEVER STOP LEARNING ──────────────────────────── */
+/* ─── SLIDE 5: NUNCA PARES DE APRENDER ──────────────────────── */
 function SlideMessage() {
   return (
     <div className="slide active" style={{ overflow:'hidden' }}>
@@ -555,30 +615,42 @@ function SlideMessage() {
       <div style={{ textAlign:'center', zIndex:1 }}>
         <p className="float-1" style={{ fontSize:'0.7rem', color:'var(--green)', letterSpacing:'0.5em', opacity:0.6, textTransform:'uppercase', marginBottom:'1rem' }}>● THE MESSAGE ●</p>
 
-        <h2 className="float-2 glitch" style={{
-          fontSize:'clamp(4.5rem,13vw,11rem)', fontWeight:900, lineHeight:0.88,
-          letterSpacing:'-0.04em', textTransform:'uppercase', fontStyle:'italic', color:'white',
-          textShadow:'0 0 80px rgba(255,255,255,0.1)',
-        }}>
-          NEVER STOP
-        </h2>
+        {/* NEVER STOP — word-by-word reveal */}
+        <div style={{ lineHeight:0.88, marginBottom:'0.1rem' }}>
+          <div className="word-reveal-1 glitch" style={{
+            fontSize:'clamp(4rem,11vw,9.5rem)', fontWeight:900,
+            letterSpacing:'-0.04em', textTransform:'uppercase', fontStyle:'italic', color:'white',
+            textShadow:'0 0 80px rgba(255,255,255,0.1)', display:'block',
+          }}>
+            NEVER
+          </div>
+          <div className="word-reveal-2" style={{
+            fontSize:'clamp(4rem,11vw,9.5rem)', fontWeight:900,
+            letterSpacing:'-0.04em', textTransform:'uppercase', fontStyle:'italic', color:'white',
+            textShadow:'0 0 80px rgba(255,255,255,0.1)', display:'block',
+          }}>
+            STOP
+          </div>
+        </div>
 
-        <h2 className="float-3" style={{
-          fontSize:'clamp(4.5rem,13vw,11rem)', fontWeight:900, lineHeight:0.88,
+        {/* LEARNING — char hover effect + shimmer */}
+        <div className="word-reveal-3" style={{
+          fontSize:'clamp(4rem,11vw,9.5rem)', fontWeight:900,
           letterSpacing:'-0.04em', textTransform:'uppercase', fontStyle:'italic',
+          display:'block',
         }}>
           {'LEARNING'.split('').map((ch, i) => (
-            <span key={i} className="nsl-char green-glow" style={{ transitionDelay:`${i*0.03}s` }}>{ch}</span>
+            <span key={i} className="nsl-char green-glow" style={{ transitionDelay:`${i*0.035}s` }}>{ch}</span>
           ))}
-        </h2>
+        </div>
 
-        <div className="float-4" style={{ margin:'2rem auto', display:'flex', alignItems:'center', justifyContent:'center', gap:'1.5rem' }}>
+        <div className="word-reveal-4" style={{ margin:'2rem auto', display:'flex', alignItems:'center', justifyContent:'center', gap:'1.5rem' }}>
           <div style={{ height:1, width:80, background:'linear-gradient(90deg, transparent, var(--green))' }} />
           <p style={{ fontSize:'clamp(0.75rem,1.2vw,1rem)', fontWeight:900, letterSpacing:'0.5em', opacity:0.35, textTransform:'uppercase' }}>Platzi 2026</p>
           <div style={{ height:1, width:80, background:'linear-gradient(90deg, var(--green), transparent)' }} />
         </div>
 
-        <p className="float-5" style={{ fontSize:'clamp(0.85rem,1.5vw,1.1rem)', opacity:0.45, letterSpacing:'0.1em', maxWidth:600, margin:'0 auto' }}>
+        <p className="float-6" style={{ fontSize:'clamp(0.85rem,1.5vw,1.1rem)', opacity:0.45, letterSpacing:'0.1em', maxWidth:600, margin:'0 auto' }}>
           In 2026, technology changes fast — education is a <span style={{color:'var(--green)', opacity:1}}>lifestyle</span>, not a phase.
         </p>
       </div>
@@ -618,6 +690,8 @@ const slideComponents = [SlideCover, SlideImpact, SlideDNA, SlideLearning, Slide
 
 export default function App() {
   const [current, setCurrent] = useState(0)
+  const [animClass, setAnimClass] = useState('')
+  const [direction, setDirection] = useState('forward')
   const canvasRef = useRef(null)
   const cursorRef = useRef(null)
 
@@ -634,14 +708,22 @@ export default function App() {
     return () => document.removeEventListener('mousemove', onMove)
   }, [])
 
+  const goTo = (next, dir = 'forward') => {
+    if (next < 0 || next >= SLIDES_COUNT) return
+    setDirection(dir)
+    setAnimClass(dir === 'forward' ? 'slide-enter' : 'slide-enter-back')
+    setCurrent(next)
+    setTimeout(() => setAnimClass(''), 700)
+  }
+
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'ArrowRight' || e.key === ' ') setCurrent(c => Math.min(c + 1, SLIDES_COUNT - 1))
-      if (e.key === 'ArrowLeft') setCurrent(c => Math.max(c - 1, 0))
+      if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1, 'forward')
+      if (e.key === 'ArrowLeft') goTo(current - 1, 'back')
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [])
+  }, [current])
 
   const progress = ((current + 1) / SLIDES_COUNT) * 100
   const ActiveSlide = slideComponents[current]
@@ -652,19 +734,21 @@ export default function App() {
       <div id="custom-cursor" ref={cursorRef} />
       <canvas id="net-canvas" ref={canvasRef} />
       <div id="progress-bar" style={{ width:`${progress}%` }} />
-      <ActiveSlide />
+      <div className={animClass} style={{ width:'100%', height:'100%' }}>
+        <ActiveSlide />
+      </div>
 
       {current > 0 && (
-        <button className="btn-nav" style={{ left:30 }} onClick={() => setCurrent(c => c - 1)}>← PREV</button>
+        <button className="btn-nav" style={{ left:30 }} onClick={() => goTo(current - 1, 'back')}>← PREV</button>
       )}
       {current < SLIDES_COUNT - 1 && (
-        <button className="btn-nav" style={{ right:30 }} onClick={() => setCurrent(c => c + 1)}>NEXT →</button>
+        <button className="btn-nav" style={{ right:30 }} onClick={() => goTo(current + 1, 'forward')}>NEXT →</button>
       )}
 
       {/* Dot navigation */}
       <div style={{ position:'fixed', bottom:36, left:'50%', transform:'translateX(-50%)', display:'flex', gap:'8px', zIndex:100 }}>
         {Array.from({ length: SLIDES_COUNT }).map((_, i) => (
-          <div key={i} onClick={() => setCurrent(i)} style={{
+          <div key={i} onClick={() => goTo(i, i > current ? 'forward' : 'back')} style={{
             width: i === current ? 28 : 8, height:8, borderRadius:99,
             background: i === current ? 'var(--green)' : 'rgba(255,255,255,0.2)',
             transition:'all 0.3s ease', cursor:'none',
@@ -675,5 +759,3 @@ export default function App() {
     </>
   )
 }
-
-
