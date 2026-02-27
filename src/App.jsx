@@ -120,7 +120,7 @@ const globalCSS = `
     width: 220px;
     height: 220px;
     border: 6px solid var(--green);
-    background: url('https://pbs.twimg.com/profile_images/1491104445831639040/yLz8bV45_400x400.jpg') center/cover;
+    background: url('/freddy.jpg') center/cover;
     animation: morph 8s ease-in-out infinite;
     box-shadow: 0 0 60px rgba(152,255,0,0.4);
     flex-shrink: 0;
@@ -350,7 +350,7 @@ function SlideCover() {
 
       {/* ✅ Platzi logo - Slide 1 */}
       <img
-        src="https://static.platzi.com/media/logos/platzi-logo.png"
+        src="/platzi-logo.png"
         alt="Platzi Logo"
         className="platzi-logo"
       />
@@ -405,7 +405,7 @@ function SlideImpact() {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {/* ✅ Platzi culture image - Slide 2 */}
           <img
-            src="https://static.platzi.com/media/blog/como-funciona-platzi-728f7311-6679-4623-832f-763b016d953d.png"
+            src="/platzi-culture.jpg"
             alt="Platzi Culture"
             className="slide2-img"
           />
