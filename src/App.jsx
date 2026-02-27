@@ -409,11 +409,22 @@ function SlideImpact() {
           </div>
         </div>
 
-        <div className="float-2" style={{ display:'flex', flexDirection:'column', gap:'1rem', position:'relative' }}>
+        <div className="float-2" style={{ display:'flex', flexDirection:'column', gap:'0.8rem', position:'relative' }}>
           <div className="scan-line" />
           <img src="/platzi-culture.jpg" alt="Platzi Culture" className="slide2-img" />
-          <div style={{ background:'rgba(152,255,0,0.06)', border:'1px solid rgba(152,255,0,0.2)', borderRadius:12, padding:'0.8rem 1.2rem', textAlign:'left' }}>
-            <p style={{ fontSize:'0.78rem', color:'var(--green)', fontWeight:700, letterSpacing:'0.08em' }}>🌎 LATAM'S LARGEST TECH LEARNING PLATFORM</p>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.8rem' }}>
+            <div style={{ position:'relative', overflow:'hidden', borderRadius:12, border:'1px solid rgba(152,255,0,0.2)' }}>
+              <img src="/estudiantes.jpg" alt="Students" style={{ width:'100%', height:90, objectFit:'cover', display:'block' }} />
+              <div style={{ position:'absolute', bottom:0, left:0, right:0, background:'linear-gradient(transparent, rgba(0,0,0,0.85))', padding:'0.4rem 0.6rem' }}>
+                <p style={{ fontSize:'0.6rem', color:'var(--green)', fontWeight:700, textTransform:'uppercase', letterSpacing:'0.08em' }}>👨‍🎓 Students</p>
+              </div>
+            </div>
+            <div style={{ position:'relative', overflow:'hidden', borderRadius:12, border:'1px solid rgba(152,255,0,0.2)' }}>
+              <img src="/comunidad.jpg" alt="Community" style={{ width:'100%', height:90, objectFit:'cover', display:'block' }} />
+              <div style={{ position:'absolute', bottom:0, left:0, right:0, background:'linear-gradient(transparent, rgba(0,0,0,0.85))', padding:'0.4rem 0.6rem' }}>
+                <p style={{ fontSize:'0.6rem', color:'var(--green)', fontWeight:700, textTransform:'uppercase', letterSpacing:'0.08em' }}>🌎 Community</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -452,10 +463,18 @@ function SlideDNA() {
         ))}
       </div>
 
-      <div className="float-5" style={{ maxWidth:700, background:'rgba(152,255,0,0.04)', border:'1px solid rgba(152,255,0,0.15)', borderRadius:12, padding:'0.8rem 1.5rem' }}>
-        <p style={{ fontSize:'clamp(0.8rem,1.2vw,1rem)', fontStyle:'italic', opacity:0.6 }}>
-          "The best leaders don't just manage — they <strong style={{color:'var(--green)'}}>inspire</strong> and <strong style={{color:'var(--green)'}}>transform</strong>."
-        </p>
+      <div className="float-5" style={{ maxWidth:1200, width:'100%', display:'grid', gridTemplateColumns:'1fr auto', gap:'1.5rem', alignItems:'center' }}>
+        <div style={{ background:'rgba(152,255,0,0.04)', border:'1px solid rgba(152,255,0,0.15)', borderRadius:12, padding:'0.8rem 1.5rem' }}>
+          <p style={{ fontSize:'clamp(0.8rem,1.2vw,1rem)', fontStyle:'italic', opacity:0.6 }}>
+            "The best leaders don't just manage — they <strong style={{color:'var(--green)'}}>inspire</strong> and <strong style={{color:'var(--green)'}}>transform</strong>."
+          </p>
+        </div>
+        <div style={{ position:'relative', overflow:'hidden', borderRadius:12, border:'2px solid rgba(152,255,0,0.3)', flexShrink:0 }}>
+          <img src="/conferencia.jpg" alt="Freddy at Conference" style={{ width:180, height:100, objectFit:'cover', display:'block' }} />
+          <div style={{ position:'absolute', bottom:0, left:0, right:0, background:'linear-gradient(transparent, rgba(0,0,0,0.9))', padding:'0.3rem 0.5rem' }}>
+            <p style={{ fontSize:'0.55rem', color:'var(--green)', fontWeight:700, textTransform:'uppercase', letterSpacing:'0.05em' }}>🎤 Freddy on Stage</p>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -500,6 +519,24 @@ function SlideLearning() {
             Thanks to Freddy's vision, I am <strong style={{color:'var(--green)'}}>highly</strong> motivated to change the world.
           </p>
           <p style={{ marginTop:'0.5rem', fontSize:'0.75rem', color:'var(--green)', opacity:0.6, letterSpacing:'0.15em' }}>— Brayan Urrego Cacante, 2026</p>
+        </div>
+
+        {/* Tech images row */}
+        <div className="float-4" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.8rem' }}>
+          <div style={{ position:'relative', overflow:'hidden', borderRadius:14, border:'1px solid rgba(152,255,0,0.25)' }}>
+            <img src="/programacion.jpg" alt="Programming" style={{ width:'100%', height:100, objectFit:'cover', display:'block' }} />
+            <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg, rgba(152,255,0,0.1), transparent)' }} />
+            <div style={{ position:'absolute', bottom:0, left:0, right:0, background:'linear-gradient(transparent, rgba(0,0,0,0.85))', padding:'0.4rem 0.8rem' }}>
+              <p style={{ fontSize:'0.65rem', color:'var(--green)', fontWeight:700, textTransform:'uppercase', letterSpacing:'0.1em' }}>💻 Software Engineering</p>
+            </div>
+          </div>
+          <div style={{ position:'relative', overflow:'hidden', borderRadius:14, border:'1px solid rgba(152,255,0,0.25)' }}>
+            <img src="/ia.jpg" alt="Artificial Intelligence" style={{ width:'100%', height:100, objectFit:'cover', display:'block' }} />
+            <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg, rgba(152,255,0,0.1), transparent)' }} />
+            <div style={{ position:'absolute', bottom:0, left:0, right:0, background:'linear-gradient(transparent, rgba(0,0,0,0.85))', padding:'0.4rem 0.8rem' }}>
+              <p style={{ fontSize:'0.65rem', color:'var(--green)', fontWeight:700, textTransform:'uppercase', letterSpacing:'0.1em' }}>🤖 Artificial Intelligence</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -638,4 +675,5 @@ export default function App() {
     </>
   )
 }
+
 
