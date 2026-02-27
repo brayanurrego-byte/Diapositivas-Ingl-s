@@ -176,11 +176,81 @@ const globalCSS = `
     gap: 1.5rem; width: 100%; max-width: 1200px;
   }
   @media (max-width: 900px) {
-    .grid-4 { grid-template-columns: repeat(2,1fr); }
-    .grid-2 { grid-template-columns: 1fr; }
+    .grid-4 { grid-template-columns: repeat(2,1fr); gap: 0.8rem; }
+    .grid-2 { grid-template-columns: 1fr; gap: 0.6rem; }
   }
-  @media (max-width: 500px) {
-    .grid-4 { grid-template-columns: 1fr; }
+
+  /* ══ MOBILE: everything fits in viewport, no scroll ══ */
+  @media (max-width: 768px) {
+    body { overflow: hidden; }
+
+    .slide {
+      padding: 0.8rem !important;
+      justify-content: center !important;
+      overflow: hidden;
+    }
+
+    /* Profile image smaller on mobile */
+    .profile-img {
+      width: 120px !important;
+      height: 120px !important;
+    }
+
+    .platzi-logo { height: 22px !important; margin-bottom: 0.2rem !important; }
+
+    /* DNA cards: 2 cols on mobile, compact */
+    .grid-4 {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 0.5rem !important;
+    }
+
+    /* Learning path: single col, compact */
+    .grid-2 {
+      grid-template-columns: 1fr !important;
+      gap: 0.4rem !important;
+    }
+
+    .glass-card {
+      padding: 0.7rem 0.8rem !important;
+      min-height: unset !important;
+      border-radius: 12px !important;
+      gap: 0 !important;
+    }
+
+    .dna-icon {
+      width: 32px !important; height: 32px !important;
+      font-size: 0.9rem !important; margin-bottom: 0.3rem !important;
+    }
+
+    .skill-tag {
+      padding: 0.55rem 0.7rem !important;
+      gap: 0.5rem !important;
+    }
+
+    .quote-block {
+      padding: 0.6rem 0.9rem !important;
+    }
+    .quote-block::before { display: none !important; }
+
+    .divider { margin: 0.2rem 0 0.4rem !important; }
+
+    .btn-nav {
+      bottom: 14px !important;
+      padding: 6px 14px !important;
+      font-size: 0.6rem !important;
+      letter-spacing: 1px !important;
+    }
+
+    .slide2-img { max-height: 120px !important; }
+
+    .stat-card { padding: 0.4rem 0.2rem !important; border-radius: 8px !important; }
+
+    .thank-you-btn {
+      padding: 0.65rem 1.2rem !important;
+      font-size: clamp(0.95rem, 4vw, 1.2rem) !important;
+      margin-top: 0.3rem !important;
+      border-radius: 10px !important;
+    }
   }
 
   #net-canvas {
@@ -388,6 +458,17 @@ function useNeuralCanvas(canvasRef) {
   }, [canvasRef])
 }
 
+/* ─── MOBILE HOOK ────────────────────────────────────────────── */
+function useIsMobile() {
+  const [mobile, setMobile] = useState(window.innerWidth <= 768)
+  useEffect(() => {
+    const fn = () => setMobile(window.innerWidth <= 768)
+    window.addEventListener('resize', fn)
+    return () => window.removeEventListener('resize', fn)
+  }, [])
+  return mobile
+}
+
 /* ─── SLIDE 1: COVER ─────────────────────────────────────────── */
 function SlideCover() {
   return (
@@ -434,6 +515,7 @@ function SlideCover() {
 
 /* ─── SLIDE 2: IMPACT ────────────────────────────────────────── */
 function SlideImpact() {
+  const m = useIsMobile()
   const stats = [
     { num:'5M+', label:'Students' },
     { num:'#1',  label:'Latam EdTech' },
@@ -441,49 +523,49 @@ function SlideImpact() {
     { num:'15+', label:'Countries' },
   ]
   return (
-    <div className="slide active">
-      <div style={{ maxWidth:'1100px', width:'100%', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'2.5rem', alignItems:'center' }}>
-        <div style={{ textAlign:'left', display:'flex', flexDirection:'column', gap:'1.2rem' }}>
+    <div className="slide active" style={{ padding: m?'0.8rem':'2rem' }}>
+      <div style={{ maxWidth:'1100px', width:'100%', display:'flex', flexDirection: m?'column':'row', gap: m?'0.8rem':'2.5rem', alignItems: m?'flex-start':'center' }}>
+        <div style={{ textAlign:'left', display:'flex', flexDirection:'column', gap: m?'0.6rem':'1.2rem', flex:1 }}>
           <div className="float-1">
-            <p style={{ fontSize:'0.7rem', textTransform:'uppercase', letterSpacing:'0.3em', color:'var(--green)', opacity:0.8, marginBottom:'0.4rem' }}>● LIVE IMPACT</p>
-            <h2 style={{ fontSize:'clamp(2rem,4.5vw,3.5rem)', fontWeight:900, lineHeight:0.95, textTransform:'uppercase' }}>
+            <p style={{ fontSize:'0.7rem', textTransform:'uppercase', letterSpacing:'0.3em', color:'var(--green)', opacity:0.8, marginBottom:'0.3rem' }}>● LIVE IMPACT</p>
+            <h2 style={{ fontSize: m?'clamp(1.6rem,7vw,2.2rem)':'clamp(2rem,4.5vw,3.5rem)', fontWeight:900, lineHeight:0.95, textTransform:'uppercase' }}>
               Transforming <br /><span className="green-glow">Education</span>
             </h2>
-            <div className="divider" />
+            <div className="divider" style={{ margin: m?'0.3rem 0 0.4rem':'0.6rem 0 1rem' }} />
           </div>
-          <p className="float-2" style={{ fontSize:'clamp(0.9rem,1.4vw,1.1rem)', fontWeight:300, lineHeight:1.8, opacity:0.8 }}>
+          {!m && <p className="float-2" style={{ fontSize:'clamp(0.9rem,1.4vw,1.1rem)', fontWeight:300, lineHeight:1.8, opacity:0.8 }}>
             Freddy <strong>successfully</strong> built Platzi to bridge the talent gap in Latam.
             It is a <strong>strongly</strong> powerful community of constant growth.
-          </p>
-          <div className="float-3" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'0.6rem' }}>
+          </p>}
+          <div className="float-3" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap: m?'0.4rem':'0.6rem' }}>
             {stats.map((s,i) => (
-              <div key={i} className="stat-card">
-                <div style={{ fontSize:'clamp(1rem,1.8vw,1.4rem)', fontWeight:900, color:'var(--green)' }}>{s.num}</div>
-                <div style={{ fontSize:'0.62rem', opacity:0.5, textTransform:'uppercase', letterSpacing:'0.1em', marginTop:'0.2rem' }}>{s.label}</div>
+              <div key={i} className="stat-card" style={{ padding: m?'0.4rem 0.2rem':'1rem 0.8rem' }}>
+                <div style={{ fontSize: m?'1rem':'clamp(1rem,1.8vw,1.4rem)', fontWeight:900, color:'var(--green)' }}>{s.num}</div>
+                <div style={{ fontSize:'0.55rem', opacity:0.5, textTransform:'uppercase', letterSpacing:'0.08em', marginTop:'0.1rem' }}>{s.label}</div>
               </div>
             ))}
           </div>
-          <div className="float-4" style={{ display:'flex', gap:'0.8rem', flexWrap:'wrap' }}>
-            <span className="tag-pill-green">EDTECH</span>
-            <span className="tag-pill-outline">FUTURE</span>
-            <span className="tag-pill-outline">AI</span>
+          <div className="float-4" style={{ display:'flex', gap:'0.6rem', flexWrap:'wrap' }}>
+            <span className="tag-pill-green" style={{ padding: m?'4px 12px':'6px 20px', fontSize: m?'0.75rem':'0.9rem' }}>EDTECH</span>
+            <span className="tag-pill-outline" style={{ padding: m?'4px 12px':'6px 20px', fontSize: m?'0.75rem':'0.9rem' }}>FUTURE</span>
+            <span className="tag-pill-outline" style={{ padding: m?'4px 12px':'6px 20px', fontSize: m?'0.75rem':'0.9rem' }}>AI</span>
           </div>
         </div>
 
-        <div className="float-2" style={{ display:'flex', flexDirection:'column', gap:'0.8rem', position:'relative' }}>
+        <div className="float-2" style={{ display:'flex', flexDirection:'column', gap:'0.6rem', position:'relative', width: m?'100%':'auto' }}>
           <div className="scan-line" />
-          <img src="/platzi-culture.jpg" alt="Platzi Culture" className="slide2-img" />
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.8rem' }}>
-            <div style={{ position:'relative', overflow:'hidden', borderRadius:12, border:'1px solid rgba(152,255,0,0.2)' }}>
-              <img src="/estudiantes.jpg" alt="Students" style={{ width:'100%', height:90, objectFit:'cover', display:'block' }} />
-              <div style={{ position:'absolute', bottom:0, left:0, right:0, background:'linear-gradient(transparent, rgba(0,0,0,0.85))', padding:'0.4rem 0.6rem' }}>
-                <p style={{ fontSize:'0.6rem', color:'var(--green)', fontWeight:700, textTransform:'uppercase', letterSpacing:'0.08em' }}>👨‍🎓 Students</p>
+          <img src="/platzi-culture.jpg" alt="Platzi Culture" className="slide2-img" style={{ maxHeight: m?'140px':'300px' }} />
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.6rem' }}>
+            <div style={{ position:'relative', overflow:'hidden', borderRadius:10, border:'1px solid rgba(152,255,0,0.2)' }}>
+              <img src="/estudiantes.jpg" alt="Students" style={{ width:'100%', height: m?60:90, objectFit:'cover', display:'block' }} />
+              <div style={{ position:'absolute', bottom:0, left:0, right:0, background:'linear-gradient(transparent, rgba(0,0,0,0.85))', padding:'0.3rem 0.5rem' }}>
+                <p style={{ fontSize:'0.55rem', color:'var(--green)', fontWeight:700, textTransform:'uppercase' }}>👨‍🎓 Students</p>
               </div>
             </div>
-            <div style={{ position:'relative', overflow:'hidden', borderRadius:12, border:'1px solid rgba(152,255,0,0.2)' }}>
-              <img src="/comunidad.jpg" alt="Community" style={{ width:'100%', height:90, objectFit:'cover', display:'block' }} />
-              <div style={{ position:'absolute', bottom:0, left:0, right:0, background:'linear-gradient(transparent, rgba(0,0,0,0.85))', padding:'0.4rem 0.6rem' }}>
-                <p style={{ fontSize:'0.6rem', color:'var(--green)', fontWeight:700, textTransform:'uppercase', letterSpacing:'0.08em' }}>🌎 Community</p>
+            <div style={{ position:'relative', overflow:'hidden', borderRadius:10, border:'1px solid rgba(152,255,0,0.2)' }}>
+              <img src="/comunidad.jpg" alt="Community" style={{ width:'100%', height: m?60:90, objectFit:'cover', display:'block' }} />
+              <div style={{ position:'absolute', bottom:0, left:0, right:0, background:'linear-gradient(transparent, rgba(0,0,0,0.85))', padding:'0.3rem 0.5rem' }}>
+                <p style={{ fontSize:'0.55rem', color:'var(--green)', fontWeight:700, textTransform:'uppercase' }}>🌎 Community</p>
               </div>
             </div>
           </div>
@@ -495,6 +577,7 @@ function SlideImpact() {
 
 /* ─── SLIDE 3: DNA ───────────────────────────────────────────── */
 function SlideDNA() {
+  const m = useIsMobile()
   const qualities = [
     { adverb:'SUCCESSFULLY', desc:'Scaling education across 15+ countries with proven results', icon:'🚀' },
     { adverb:'CONSTANTLY',   desc:'Innovating with AI and emerging technologies every day',   icon:'⚡' },
@@ -502,29 +585,30 @@ function SlideDNA() {
     { adverb:'CLEARLY',      desc:'Communicating complex ideas so everyone understands',      icon:'🎯' },
   ]
   return (
-    <div className="slide active" style={{ flexDirection:'column', gap:'2rem' }}>
+    <div className="slide active" style={{ flexDirection:'column', gap: m?'0.8rem':'2rem' }}>
       <div className="float-1" style={{ textAlign:'center' }}>
-        <p style={{ fontSize:'0.7rem', color:'var(--green)', letterSpacing:'0.4em', opacity:0.7, textTransform:'uppercase', marginBottom:'0.5rem' }}>● CORE QUALITIES</p>
-        <h2 style={{ fontSize:'clamp(2rem,4.5vw,3.2rem)', fontWeight:900, fontStyle:'italic', textTransform:'uppercase', letterSpacing:'0.05em' }}>
+        <p style={{ fontSize:'0.65rem', color:'var(--green)', letterSpacing:'0.4em', opacity:0.7, textTransform:'uppercase', marginBottom: m?'0.2rem':'0.5rem' }}>● CORE QUALITIES</p>
+        <h2 style={{ fontSize: m?'clamp(1.5rem,6vw,2rem)':'clamp(2rem,4.5vw,3.2rem)', fontWeight:900, fontStyle:'italic', textTransform:'uppercase' }}>
           Leadership <span className="green-glow">DNA</span>
         </h2>
-        <div style={{ height:3, width:120, background:'linear-gradient(90deg, transparent, var(--green), transparent)', margin:'0.8rem auto 0' }} />
+        <div style={{ height:3, width:100, background:'linear-gradient(90deg, transparent, var(--green), transparent)', margin: m?'0.4rem auto 0':'0.8rem auto 0' }} />
       </div>
 
-      <div className="grid-4" style={{ maxWidth:'1200px' }}>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(2,1fr)', gap: m?'0.5rem':'1.5rem', width:'100%', maxWidth: m?'100%':'1200px' }}>
         {qualities.map((q, i) => (
-          <div key={q.adverb} className={`glass-card float-${i+2}`}>
-            <div className="dna-icon">{q.icon}</div>
-            <h3 className="green-glow" style={{ fontSize:'clamp(1.1rem,2vw,1.5rem)', fontWeight:900, fontStyle:'italic', marginBottom:'0.6rem' }}>
+          <div key={q.adverb} className={`glass-card float-${i+2}`} style={{ padding: m?'0.7rem':'1.8rem 1.5rem', minHeight:'unset' }}>
+            <div className="dna-icon" style={{ width: m?34:52, height: m?34:52, fontSize: m?'0.9rem':'1.4rem', marginBottom: m?'0.3rem':'0.8rem' }}>{q.icon}</div>
+            <h3 className="green-glow" style={{ fontSize: m?'clamp(0.75rem,3vw,1rem)':'clamp(1.1rem,2vw,1.5rem)', fontWeight:900, fontStyle:'italic', marginBottom: m?'0.2rem':'0.6rem' }}>
               {q.adverb}
             </h3>
-            <div style={{ height:2, width:40, background:'var(--green)', margin:'0 auto 0.8rem', opacity:0.5 }} />
-            <p style={{ opacity:0.65, fontWeight:400, fontSize:'clamp(0.75rem,1.1vw,0.9rem)', lineHeight:1.6 }}>{q.desc}</p>
+            <div style={{ height:2, width:30, background:'var(--green)', margin: m?'0 auto 0.3rem':'0 auto 0.8rem', opacity:0.5 }} />
+            {!m && <p style={{ opacity:0.65, fontWeight:400, fontSize:'clamp(0.75rem,1.1vw,0.9rem)', lineHeight:1.6 }}>{q.desc}</p>}
+            {m && <p style={{ opacity:0.55, fontWeight:400, fontSize:'0.68rem', lineHeight:1.4 }}>{q.desc}</p>}
           </div>
         ))}
       </div>
 
-      <div className="float-5" style={{ maxWidth:1200, width:'100%', display:'grid', gridTemplateColumns:'1fr auto', gap:'1.5rem', alignItems:'center' }}>
+      {!m && <div className="float-5" style={{ maxWidth:1200, width:'100%', display:'grid', gridTemplateColumns:'1fr auto', gap:'1.5rem', alignItems:'center' }}>
         <div style={{ background:'rgba(152,255,0,0.04)', border:'1px solid rgba(152,255,0,0.15)', borderRadius:12, padding:'0.8rem 1.5rem' }}>
           <p style={{ fontSize:'clamp(0.8rem,1.2vw,1rem)', fontStyle:'italic', opacity:0.6 }}>
             "The best leaders don't just manage — they <strong style={{color:'var(--green)'}}>inspire</strong> and <strong style={{color:'var(--green)'}}>transform</strong>."
@@ -533,16 +617,22 @@ function SlideDNA() {
         <div style={{ position:'relative', overflow:'hidden', borderRadius:12, border:'2px solid rgba(152,255,0,0.3)', flexShrink:0 }}>
           <img src="/conferencia.jpg" alt="Freddy at Conference" style={{ width:180, height:100, objectFit:'cover', display:'block' }} />
           <div style={{ position:'absolute', bottom:0, left:0, right:0, background:'linear-gradient(transparent, rgba(0,0,0,0.9))', padding:'0.3rem 0.5rem' }}>
-            <p style={{ fontSize:'0.55rem', color:'var(--green)', fontWeight:700, textTransform:'uppercase', letterSpacing:'0.05em' }}>🎤 Freddy on Stage</p>
+            <p style={{ fontSize:'0.55rem', color:'var(--green)', fontWeight:700, textTransform:'uppercase' }}>🎤 Freddy on Stage</p>
           </div>
         </div>
-      </div>
+      </div>}
+      {m && <div className="float-5" style={{ width:'100%', background:'rgba(152,255,0,0.04)', border:'1px solid rgba(152,255,0,0.15)', borderRadius:10, padding:'0.6rem 1rem' }}>
+        <p style={{ fontSize:'0.75rem', fontStyle:'italic', opacity:0.6, textAlign:'center' }}>
+          "The best leaders <strong style={{color:'var(--green)'}}>inspire</strong> and <strong style={{color:'var(--green)'}}>transform</strong>."
+        </p>
+      </div>}
     </div>
   )
 }
 
 /* ─── SLIDE 4: LEARNING ──────────────────────────────────────── */
 function SlideLearning() {
+  const m = useIsMobile()
   const skills = [
     { title:'Software Engineering', sub:'Coding the next revolution.',      icon:'💻', pct:85 },
     { title:'Artificial Intelligence', sub:'Harnessing data for progress.', icon:'🤖', pct:75 },
@@ -550,24 +640,24 @@ function SlideLearning() {
     { title:'Public Speaking', sub:'Communicating ideas with impact.',       icon:'🎤', pct:80 },
   ]
   return (
-    <div className="slide active">
-      <div style={{ maxWidth:'950px', width:'100%', textAlign:'left', display:'flex', flexDirection:'column', gap:'1.3rem' }}>
+    <div className="slide active" style={{ padding: m?'0.8rem':'2rem' }}>
+      <div style={{ maxWidth:'950px', width:'100%', textAlign:'left', display:'flex', flexDirection:'column', gap: m?'0.5rem':'1.3rem' }}>
         <div className="float-1">
-          <p style={{ fontSize:'0.7rem', color:'var(--green)', letterSpacing:'0.4em', opacity:0.7, textTransform:'uppercase', marginBottom:'0.3rem' }}>● PERSONAL JOURNEY</p>
-          <h2 style={{ fontSize:'clamp(1.8rem,4vw,2.8rem)', fontWeight:900, fontStyle:'italic' }}>
+          <p style={{ fontSize:'0.65rem', color:'var(--green)', letterSpacing:'0.35em', opacity:0.7, textTransform:'uppercase', marginBottom:'0.2rem' }}>● PERSONAL JOURNEY</p>
+          <h2 style={{ fontSize: m?'clamp(1.4rem,6vw,2rem)':'clamp(1.8rem,4vw,2.8rem)', fontWeight:900, fontStyle:'italic' }}>
             <span className="green-glow">MY</span> LEARNING PATH
           </h2>
-          <div className="divider" />
+          <div className="divider" style={{ margin: m?'0.2rem 0 0.3rem':'0.6rem 0 1rem' }} />
         </div>
 
-        <div className="grid-2 float-2">
+        <div style={{ display:'grid', gridTemplateColumns: m?'1fr':'1fr 1fr', gap: m?'0.4rem':'1.2rem', width:'100%' }} className="float-2">
           {skills.map(s => (
-            <div key={s.title} className="skill-tag">
-              <div style={{ fontSize:'1.6rem', flexShrink:0 }}>{s.icon}</div>
+            <div key={s.title} className="skill-tag" style={{ padding: m?'0.5rem 0.7rem':'1.1rem 1.5rem', gap: m?'0.5rem':'1rem' }}>
+              <div style={{ fontSize: m?'1.2rem':'1.6rem', flexShrink:0 }}>{s.icon}</div>
               <div style={{ flex:1 }}>
-                <strong style={{ fontSize:'0.95rem', display:'block', textTransform:'uppercase', letterSpacing:'0.05em', marginBottom:'0.2rem' }}>{s.title}</strong>
-                <span style={{ opacity:0.45, fontWeight:600, fontSize:'0.78rem' }}>{s.sub}</span>
-                <div style={{ marginTop:'0.5rem', height:3, background:'rgba(255,255,255,0.1)', borderRadius:99 }}>
+                <strong style={{ fontSize: m?'0.75rem':'0.95rem', display:'block', textTransform:'uppercase', letterSpacing:'0.04em', marginBottom:'0.1rem' }}>{s.title}</strong>
+                {!m && <span style={{ opacity:0.45, fontWeight:600, fontSize:'0.78rem' }}>{s.sub}</span>}
+                <div style={{ marginTop: m?'0.3rem':'0.5rem', height:3, background:'rgba(255,255,255,0.1)', borderRadius:99 }}>
                   <div style={{ height:'100%', width:`${s.pct}%`, background:'var(--green)', borderRadius:99, boxShadow:'0 0 8px var(--green)' }} />
                 </div>
               </div>
@@ -575,14 +665,14 @@ function SlideLearning() {
           ))}
         </div>
 
-        <div className="quote-block float-3">
-          <p style={{ fontSize:'clamp(0.95rem,1.6vw,1.2rem)', fontWeight:300, fontStyle:'italic', opacity:0.9, lineHeight:1.7 }}>
+        <div className="quote-block float-3" style={{ padding: m?'0.6rem 0.9rem':'1.3rem 1.8rem' }}>
+          <p style={{ fontSize: m?'0.8rem':'clamp(0.95rem,1.6vw,1.2rem)', fontWeight:300, fontStyle:'italic', opacity:0.9, lineHeight:1.6 }}>
             Thanks to Freddy's vision, I am <strong style={{color:'var(--green)'}}>highly</strong> motivated to change the world.
           </p>
-          <p style={{ marginTop:'0.5rem', fontSize:'0.75rem', color:'var(--green)', opacity:0.6, letterSpacing:'0.15em' }}>— Brayan Urrego Cacante, 2026</p>
+          <p style={{ marginTop:'0.3rem', fontSize:'0.7rem', color:'var(--green)', opacity:0.6, letterSpacing:'0.1em' }}>— Brayan Urrego Cacante, 2026</p>
         </div>
 
-        <div className="float-4" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.8rem' }}>
+        {!m && <div className="float-4" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.8rem' }}>
           <div style={{ position:'relative', overflow:'hidden', borderRadius:14, border:'1px solid rgba(152,255,0,0.25)' }}>
             <img src="/programacion.jpg" alt="Programming" style={{ width:'100%', height:100, objectFit:'cover', display:'block' }} />
             <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg, rgba(152,255,0,0.1), transparent)' }} />
@@ -597,7 +687,7 @@ function SlideLearning() {
               <p style={{ fontSize:'0.65rem', color:'var(--green)', fontWeight:700, textTransform:'uppercase', letterSpacing:'0.1em' }}>🤖 Artificial Intelligence</p>
             </div>
           </div>
-        </div>
+        </div>}
       </div>
     </div>
   )
@@ -605,27 +695,26 @@ function SlideLearning() {
 
 /* ─── SLIDE 5: NUNCA PARES DE APRENDER ──────────────────────── */
 function SlideMessage() {
+  const m = useIsMobile()
   return (
     <div className="slide active" style={{ overflow:'hidden' }}>
       <div className="pulse-bg" style={{ position:'absolute', width:600, height:600, borderRadius:'50%', background:'var(--green)', filter:'blur(120px)', opacity:0.07, top:'50%', left:'50%', transform:'translate(-50%,-50%)', zIndex:-1 }} />
-      <div style={{ position:'absolute', width:250, height:250, borderRadius:'50%', background:'#00ffcc', filter:'blur(80px)', opacity:0.05, top:'15%', right:'8%', zIndex:-1 }} />
       <div style={{ position:'absolute', left:'5%', top:0, bottom:0, width:1, background:'linear-gradient(180deg, transparent, rgba(152,255,0,0.3), transparent)' }} />
       <div style={{ position:'absolute', right:'5%', top:0, bottom:0, width:1, background:'linear-gradient(180deg, transparent, rgba(152,255,0,0.3), transparent)' }} />
 
       <div style={{ textAlign:'center', zIndex:1 }}>
-        <p className="float-1" style={{ fontSize:'0.7rem', color:'var(--green)', letterSpacing:'0.5em', opacity:0.6, textTransform:'uppercase', marginBottom:'1rem' }}>● THE MESSAGE ●</p>
+        <p className="float-1" style={{ fontSize:'0.65rem', color:'var(--green)', letterSpacing:'0.4em', opacity:0.6, textTransform:'uppercase', marginBottom: m?'0.5rem':'1rem' }}>● THE MESSAGE ●</p>
 
-        {/* NEVER STOP — word-by-word reveal */}
         <div style={{ lineHeight:0.88, marginBottom:'0.1rem' }}>
           <div className="word-reveal-1 glitch" style={{
-            fontSize:'clamp(4rem,11vw,9.5rem)', fontWeight:900,
+            fontSize: m?'clamp(3rem,16vw,5rem)':'clamp(4rem,11vw,9.5rem)', fontWeight:900,
             letterSpacing:'-0.04em', textTransform:'uppercase', fontStyle:'italic', color:'white',
             textShadow:'0 0 80px rgba(255,255,255,0.1)', display:'block',
           }}>
             NEVER
           </div>
           <div className="word-reveal-2" style={{
-            fontSize:'clamp(4rem,11vw,9.5rem)', fontWeight:900,
+            fontSize: m?'clamp(3rem,16vw,5rem)':'clamp(4rem,11vw,9.5rem)', fontWeight:900,
             letterSpacing:'-0.04em', textTransform:'uppercase', fontStyle:'italic', color:'white',
             textShadow:'0 0 80px rgba(255,255,255,0.1)', display:'block',
           }}>
@@ -633,9 +722,8 @@ function SlideMessage() {
           </div>
         </div>
 
-        {/* LEARNING — char hover effect + shimmer */}
         <div className="word-reveal-3" style={{
-          fontSize:'clamp(4rem,11vw,9.5rem)', fontWeight:900,
+          fontSize: m?'clamp(3rem,16vw,5rem)':'clamp(4rem,11vw,9.5rem)', fontWeight:900,
           letterSpacing:'-0.04em', textTransform:'uppercase', fontStyle:'italic',
           display:'block',
         }}>
@@ -644,13 +732,13 @@ function SlideMessage() {
           ))}
         </div>
 
-        <div className="word-reveal-4" style={{ margin:'2rem auto', display:'flex', alignItems:'center', justifyContent:'center', gap:'1.5rem' }}>
-          <div style={{ height:1, width:80, background:'linear-gradient(90deg, transparent, var(--green))' }} />
-          <p style={{ fontSize:'clamp(0.75rem,1.2vw,1rem)', fontWeight:900, letterSpacing:'0.5em', opacity:0.35, textTransform:'uppercase' }}>Platzi 2026</p>
-          <div style={{ height:1, width:80, background:'linear-gradient(90deg, var(--green), transparent)' }} />
+        <div className="word-reveal-4" style={{ margin: m?'1rem auto':'2rem auto', display:'flex', alignItems:'center', justifyContent:'center', gap:'1rem' }}>
+          <div style={{ height:1, width:60, background:'linear-gradient(90deg, transparent, var(--green))' }} />
+          <p style={{ fontSize:'clamp(0.65rem,1.2vw,1rem)', fontWeight:900, letterSpacing:'0.4em', opacity:0.35, textTransform:'uppercase' }}>Platzi 2026</p>
+          <div style={{ height:1, width:60, background:'linear-gradient(90deg, var(--green), transparent)' }} />
         </div>
 
-        <p className="float-6" style={{ fontSize:'clamp(0.85rem,1.5vw,1.1rem)', opacity:0.45, letterSpacing:'0.1em', maxWidth:600, margin:'0 auto' }}>
+        <p className="float-6" style={{ fontSize: m?'0.8rem':'clamp(0.85rem,1.5vw,1.1rem)', opacity:0.45, letterSpacing:'0.08em', maxWidth:600, margin:'0 auto', padding: m?'0 1rem':0 }}>
           In 2026, technology changes fast — education is a <span style={{color:'var(--green)', opacity:1}}>lifestyle</span>, not a phase.
         </p>
       </div>
